@@ -168,7 +168,7 @@ export const AddPost = () => {
 
   useEffect(() => {
     if (!token && !isAuth) return navigate('/login');
-  }, []);
+  }, [isAuth, navigate, token]);
 
   return (
     <Paper style={{ padding: 30 }}>

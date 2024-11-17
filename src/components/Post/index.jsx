@@ -11,6 +11,7 @@ import { UserInfo } from '../UserInfo';
 import { PostSkeleton } from './Skeleton';
 import { Link, useNavigate } from 'react-router-dom';
 import { fetchRemovePostById } from '../../redux/slices/posts';
+import { API_URL } from '../../axios';
 
 export const Post = ({
   id,
@@ -39,7 +40,7 @@ export const Post = ({
   const uploadsImageUrl = `${imageUrl}`.length
     ? `${imageUrl}`.includes('http')
       ? imageUrl
-      : `http://localhost:4444${imageUrl}`
+      : `${API_URL}${imageUrl}`
     : '';
 
   if (isLoading) {

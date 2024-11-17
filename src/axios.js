@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "https://blog-server-iyxb.onrender.com";
+export const API_URL = "https://blog-server-iyxb.onrender.com";
 
 const instance = axios.create({ baseURL: API_URL });
 

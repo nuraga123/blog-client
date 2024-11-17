@@ -1,0 +1,43 @@
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f9fa;
+  font-family: "Arial", sans-serif;
+
+  &__title {
+    font-size: 120px;
+    font-weight: bold;
+    color: #ff6b6b;
+    margin: 0;
+  }
+
+  &__text {
+    font-size: 18px;
+    margin: 10px 0 20px 0;
+    color: #555;
+    text-align: center;
+  }
+
+  &__button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background-color: #0056b3;
+      transform: scale(1.05);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}

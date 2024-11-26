@@ -21,23 +21,36 @@ function App() {
 
   }, [dispatch]);
 
-  return (
-    <>
+  if (!isAuth) {
+    return <>
       <Header />
       <Container maxWidth="lg">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/posts/:id" element={<FullPost />} />
-          <Route path="/posts/:id/edit" element={<AddPost />} />
-          <Route path="/add-post" element={<AddPost />} />
-
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="*" element={<Login />} />
+
         </Routes>
       </Container>
     </>
-  );
+  } else {
+
+
+    return (
+      <>
+        <Header />
+        <Container maxWidth="lg">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/posts/:id" element={<FullPost />} />
+            <Route path="/posts/:id/edit" element={<AddPost />} />
+            <Route path="/add-post" element={<AddPost />} />
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </Container>
+      </>
+    );
+  }
 }
 
 export default App;

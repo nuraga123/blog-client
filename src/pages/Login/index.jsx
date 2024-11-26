@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
@@ -7,33 +7,47 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
+import Autocomplete from '@mui/material/Autocomplete';
 
 import styles from './Login.module.scss';
 import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
+import { fetchUsers } from '../../redux/slices/users';
 
 export const Login = () => {
   const navigate = useNavigate();
   const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
+  const { users } = useSelector((state) => state.users);
+
+  useEffect(() => {
+    dispatch(fetchUsers());
+  }, [dispatch]);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isValid },
   } = useForm({
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+    defaultValues: { email: '', password: '' },
     mode: 'onChange',
   });
 
+  console.log(errors);
+
   const onSubmit = async (values) => {
     const { payload } = await dispatch(fetchAuth(values));
-    return payload
-      ? localStorage.setItem('token', payload.token)
-      : alert('не удалось авторизоваться !');
+    if (payload) {
+      localStorage.setItem('token', payload.token);
+      navigate('/');
+    } else {
+      alert('не удалось авторизоваться!');
+    }
   };
+
+  const emails = users.items.map((el) => {
+    return { email: el.email };
+  });
 
   if (isAuth) return navigate('/');
 
@@ -42,20 +56,31 @@ export const Login = () => {
       <Typography classes={{ root: styles.title }} variant="h5">
         Вход в аккаунт
       </Typography>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          {...register('email', {
-            required: 'Введите почту',
-            pattern: {
-              value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-              message: 'Неверный формат почты',
-            },
-          })}
-          className={styles.field}
-          label="E-Mail"
-          error={Boolean(errors.email?.message)}
-          helperText={errors.email?.message}
-          fullWidth
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+        <Autocomplete
+          options={emails}
+          getOptionLabel={(option) => option.email || ''}
+          onInputChange={(event, value) => {
+            event.isDefaultPrevented();
+            setValue('email', value);
+          }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              {...register('email', {
+                required: 'Введите почту',
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: 'Неверный формат почты',
+                },
+              })}
+              className={styles.field}
+              label="E-Mail"
+              error={Boolean(errors.email?.message)}
+              helperText={Boolean(errors.email?.message)}
+              fullWidth
+            />
+          )}
         />
         <TextField
           {...register('password', {

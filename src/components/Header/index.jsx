@@ -3,18 +3,26 @@ import Button from '@mui/material/Button';
 
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
 import { logout, selectIsAuth } from '../../redux/slices/auth';
 import { useDispatch, useSelector } from 'react-redux';
+import AzencoLogo from '../SvgCompomets/AzencoLogo';
 
 export const Header = () => {
   const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const location = useLocation();
+  console.log(location.pathname);
+
+  const isLogin = location.pathname === '/login' ? true : false;
+  const isRegister = location.pathname === '/register' ? true : false;
+
   const handleLogout = () => {
     if (window.confirm('выйти ?')) {
-      localStorage.removeItem("token");
+      localStorage.removeItem('token');
       dispatch(logout());
       navigate('/login');
     }
@@ -24,30 +32,42 @@ export const Header = () => {
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
-          <Link className={styles.logo} to="/">
-            <div>ARCHAKOV BLOG</div>
-          </Link>
+          {isAuth ? (
+            <Link className={styles.logo} to="/">
+              <div className={styles.welcome}>Azenco</div>
+            </Link>
+          ) : (
+            <AzencoLogo />
+          )}
 
           <div className={styles.buttons}>
             {isAuth ? (
               <>
-                <Link to={'/add-post'}>
-                  <Button variant="contained">написать статью</Button>
-                </Link>
-
-                <Button variant="contained" onClick={handleLogout}>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={handleLogout}
+                >
                   выйти
                 </Button>
               </>
             ) : (
               <>
-                <Link to={'login'}>
-                  <Button variant="outlined">Войти</Button>
-                </Link>
+                {!isLogin && (
+                  <Link to={'login'}>
+                    <Button variant="contained" color="success">
+                      Войти
+                    </Button>
+                  </Link>
+                )}
 
-                <Link to={'register'}>
-                  <Button variant="contained">Создать аккаунт</Button>
-                </Link>
+                {!isRegister && (
+                  <Link to={'register'}>
+                    <Button variant="contained" color="info">
+                      Создать аккаунт
+                    </Button>
+                  </Link>
+                )}
               </>
             )}
           </div>

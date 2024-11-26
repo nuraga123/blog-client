@@ -3,7 +3,6 @@ import Typography from '@mui/material/Typography';
 import TextField from '@mui/material/TextField';
 import Paper from '@mui/material/Paper';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 
 import styles from './Login.module.scss';
 import { useForm } from 'react-hook-form';
@@ -31,9 +30,12 @@ export const Registration = () => {
 
   const onSubmit = async (values) => {
     const { payload } = await dispatch(fetchRegistration(values));
-    return payload
-      ? localStorage.setItem('token', payload.token)
-      : alert('Ошибка при регистрации !');
+    if (payload) {
+      localStorage.setItem('token', payload.token);
+      navigate('/');
+    } else {
+      alert('Ошибка при регистрации !');
+    }
   };
 
   if (isAuth) return navigate('/');
@@ -46,11 +48,7 @@ export const Registration = () => {
         Создание аккаунта
       </Typography>
 
-      <div className={styles.avatar}>
-        <Avatar sx={{ width: 100, height: 100 }} />
-      </div>
-
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <TextField
           {...register('username', {
             required: 'Введите имя',

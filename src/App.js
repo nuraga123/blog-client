@@ -6,6 +6,8 @@ import NotFoundPage from "./components/Error";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
 import { useEffect } from "react";
+import { LanguageProvider } from "./hook/useTranslation";
+
 
 function App() {
   const dispatch = useDispatch();
@@ -22,22 +24,23 @@ function App() {
   }, [dispatch]);
 
   if (!isAuth) {
-    return <>
+    return <LanguageProvider>
       <Header />
       <Container maxWidth="lg">
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Login />} />
           <Route path="/register" element={<Registration />} />
-          <Route path="*" element={<Login />} />
+          <Route path="*" element={<NotFoundPage />} />
 
         </Routes>
       </Container>
-    </>
+    </LanguageProvider>
   } else {
 
 
     return (
-      <>
+      <LanguageProvider>
         <Header />
         <Container maxWidth="lg">
           <Routes>
@@ -48,7 +51,7 @@ function App() {
             <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </Container>
-      </>
+      </LanguageProvider>
     );
   }
 }

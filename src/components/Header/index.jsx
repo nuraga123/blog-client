@@ -1,29 +1,24 @@
 import React from 'react';
 import Button from '@mui/material/Button';
-
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-
-import { logout, selectIsAuth } from '../../redux/slices/auth';
-import { useDispatch, useSelector } from 'react-redux';
-import AzencoLogo from '../SvgCompomets/AzencoLogo';
+import { useTranslation } from '../../hook/useTranslation'; // Обновленный импорт
+import AzencoLogo from '../AzencoLogo/AzencoLogo';
+import LanguageSwitcher from '../LanguageSwitcher';
 
 export const Header = () => {
-  const isAuth = useSelector(selectIsAuth);
-  const dispatch = useDispatch();
+  const { translate } = useTranslation(); // Получаем функцию для перевода
   const navigate = useNavigate();
-
   const location = useLocation();
-  console.log(location.pathname);
+  const pathname = location.pathname;
 
-  const isLogin = location.pathname === '/login' ? true : false;
-  const isRegister = location.pathname === '/register' ? true : false;
+  const isLogin = pathname === '/' || pathname === '/login';
+  const isRegister = location.pathname === '/register';
 
   const handleLogout = () => {
-    if (window.confirm('выйти ?')) {
+    if (window.confirm(translate('logout_confirm'))) {
       localStorage.removeItem('token');
-      dispatch(logout());
       navigate('/login');
     }
   };
@@ -32,44 +27,36 @@ export const Header = () => {
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
-          {isAuth ? (
-            <Link className={styles.logo} to="/">
-              <div className={styles.welcome}>Azenco</div>
-            </Link>
-          ) : (
+          <Link to="/">
             <AzencoLogo />
-          )}
+          </Link>
 
           <div className={styles.buttons}>
-            {isAuth ? (
-              <>
+            <Button variant="contained" color="error" onClick={handleLogout}>
+              {translate('logout')}
+            </Button>
+
+            {!isLogin && !isRegister && (
+              <Link to={'login'}>
                 <Button
                   variant="contained"
                   color="success"
-                  onClick={handleLogout}
+                  className={styles.btn}
                 >
-                  выйти
+                  {translate('login')}
                 </Button>
-              </>
-            ) : (
-              <>
-                {!isLogin && (
-                  <Link to={'login'}>
-                    <Button variant="contained" color="success">
-                      Войти
-                    </Button>
-                  </Link>
-                )}
-
-                {!isRegister && (
-                  <Link to={'register'}>
-                    <Button variant="contained" color="info">
-                      Создать аккаунт
-                    </Button>
-                  </Link>
-                )}
-              </>
+              </Link>
             )}
+            {!isRegister && (
+              <Link to={'register'}>
+                <Button variant="contained" color="info" className={styles.btn}>
+                  {translate('register')}
+                </Button>
+              </Link>
+            )}
+            <div className={styles.btn}>
+              <LanguageSwitcher />
+            </div>
           </div>
         </div>
       </Container>

@@ -1,8 +1,12 @@
 .root {
   background-color: #fff;
   padding: 10px 0;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: 2px solid #c9c9c9;
   margin-bottom: 30px;
+  position: sticky;
+  height: 70px;
+  top: 0;
+  z-index: 10;
 }
 
 .inner {
@@ -32,7 +36,7 @@
   align-items: center;
   width: 100%;
 
-  button {
+  .btn {
     margin-left: 10px;
   }
 }

@@ -21,16 +21,17 @@ export const Login = () => {
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, [dispatch]);
+  }, []);
 
   const {
     register,
     handleSubmit,
     setValue,
+    clearErrors,
     formState: { errors, isValid },
   } = useForm({
     defaultValues: { email: '', password: '' },
-    mode: 'onChange',
+    mode: 'all',
   });
 
   console.log(errors);
@@ -56,13 +57,26 @@ export const Login = () => {
       <Typography classes={{ root: styles.title }} variant="h5">
         Вход в аккаунт
       </Typography>
+      {errors?.email?.message && (
+        <div
+          style={{
+            color: '#FF0000',
+            marginBottom: 10,
+            marginLeft: 10,
+          }}
+        >
+          {errors?.email?.message}
+        </div>
+      )}
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <Autocomplete
           options={emails}
-          getOptionLabel={(option) => option.email || ''}
+          getOptionLabel={(option) => (option?.email ? option.email : '')}
+          error={Boolean(errors?.email?.message)}
           onInputChange={(event, value) => {
             event.isDefaultPrevented();
             setValue('email', value);
+            clearErrors('email');
           }}
           renderInput={(params) => (
             <TextField
@@ -76,12 +90,12 @@ export const Login = () => {
               })}
               className={styles.field}
               label="E-Mail"
-              error={Boolean(errors.email?.message)}
-              helperText={Boolean(errors.email?.message)}
+              helperText={Boolean(errors?.email?.message)}
               fullWidth
             />
           )}
         />
+
         <TextField
           {...register('password', {
             required: 'Введите пароль',

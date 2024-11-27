@@ -101,7 +101,7 @@ export const Registration = () => {
           variant="contained"
           fullWidth
         >
-          Войти
+          Зарегистрироваться
         </Button>
       </form>
     </Paper>

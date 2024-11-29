@@ -12,8 +12,10 @@ import Autocomplete from '@mui/material/Autocomplete';
 import styles from './Login.module.scss';
 import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
 import { fetchUsers } from '../../redux/slices/users';
+import { useTranslation } from '../../hook/useTranslation';
 
 export const Login = () => {
+  const { translate } = useTranslation(); // Подключение перевода
   const navigate = useNavigate();
   const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
@@ -21,7 +23,7 @@ export const Login = () => {
 
   useEffect(() => {
     dispatch(fetchUsers());
-  }, []);
+  }, [dispatch]);
 
   const {
     register,
@@ -34,15 +36,13 @@ export const Login = () => {
     mode: 'all',
   });
 
-  console.log(errors);
-
   const onSubmit = async (values) => {
     const { payload } = await dispatch(fetchAuth(values));
     if (payload) {
       localStorage.setItem('token', payload.token);
       navigate('/');
     } else {
-      alert('не удалось авторизоваться!');
+      alert(translate('auth_failed'));
     }
   };
 
@@ -55,19 +55,8 @@ export const Login = () => {
   return (
     <Paper classes={{ root: styles.root }}>
       <Typography classes={{ root: styles.title }} variant="h5">
-        Вход в аккаунт
+        {translate('login')}
       </Typography>
-      {errors?.email?.message && (
-        <div
-          style={{
-            color: '#FF0000',
-            marginBottom: 10,
-            marginLeft: 10,
-          }}
-        >
-          {errors?.email?.message}
-        </div>
-      )}
       <form onSubmit={handleSubmit(onSubmit)} autoComplete="off">
         <Autocomplete
           options={emails}
@@ -82,14 +71,19 @@ export const Login = () => {
             <TextField
               {...params}
               {...register('email', {
-                required: 'Введите почту',
+                required: translate('email_required'),
                 pattern: {
                   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Неверный формат почты',
+                  message: translate('email_invalid'),
                 },
               })}
               className={styles.field}
-              label="E-Mail"
+              label={
+                Boolean(errors?.email?.message)
+                  ? errors?.email?.message
+                  : translate('email')
+              }
+              error={Boolean(errors?.email?.message)}
               helperText={Boolean(errors?.email?.message)}
               fullWidth
             />
@@ -98,14 +92,14 @@ export const Login = () => {
 
         <TextField
           {...register('password', {
-            required: 'Введите пароль',
+            required: translate('password_required'),
             minLength: {
               value: 8,
-              message: 'Пароль должен быть не менее 8 символов',
+              message: translate('password_min'),
             },
           })}
           className={styles.field}
-          label="Пароль"
+          label={translate('password')}
           error={Boolean(errors.password?.message)}
           helperText={errors.password?.message}
           fullWidth
@@ -117,7 +111,7 @@ export const Login = () => {
           fullWidth
           disabled={!isValid}
         >
-          Войти
+          {translate('login')}
         </Button>
       </form>
     </Paper>

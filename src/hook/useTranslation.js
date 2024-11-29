@@ -6,21 +6,19 @@ const LanguageContext = createContext();
 
 // Провайдер контекста
 export const LanguageProvider = ({ children }) => {
-  const [language, setLanguage] = useState('az');
+  const [language, setLanguage] = useState(localStorage.getItem('lang') || 'az');
 
   const translate = (key) => {
     return translations[language][key];
   };
 
-  const changeLanguage = (lang) => {
-    setLanguage(lang);
-  };
+  const changeLanguage = (lang) => setLanguage(lang);
 
   return (
     <LanguageContext.Provider value={{ translate, changeLanguage }}>
       {children}
     </LanguageContext.Provider>
-  );
+  )
 };
 
 // Хук для доступа к контексту

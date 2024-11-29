@@ -28,31 +28,28 @@ function App() {
       <Header />
       <Container maxWidth="lg">
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Login />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
           <Route path="*" element={<NotFoundPage />} />
-
         </Routes>
       </Container>
     </LanguageProvider>
   } else {
 
-
-    return (
-      <LanguageProvider>
-        <Header />
-        <Container maxWidth="lg">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/posts/:id" element={<FullPost />} />
-            <Route path="/posts/:id/edit" element={<AddPost />} />
-            <Route path="/add-post" element={<AddPost />} />
-            <Route path="*" element={<NotFoundPage />} />
-          </Routes>
-        </Container>
-      </LanguageProvider>
-    );
+    return (<LanguageProvider>
+      <Header />
+      <Container maxWidth="lg">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/posts/:id" element={<FullPost />} />
+          <Route path="/posts/:id/edit" element={<AddPost />} />
+          <Route path="/add-post" element={<AddPost />} />
+        </Routes>
+      </Container>
+    </LanguageProvider>
+    )
   }
 }
 

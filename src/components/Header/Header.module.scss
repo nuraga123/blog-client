@@ -40,3 +40,61 @@
     margin-left: 10px;
   }
 }
+
+.root {
+  .userMenu {
+    position: relative;
+    display: inline-block;
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      &:hover {
+        transform: scale(1.1);
+      }
+    }
+
+    .dropdownMenu {
+      position: absolute;
+      top: 50px;
+      right: 0;
+      width: 200px;
+      padding: 10px;
+      background-color: #fff;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border-radius: 8px;
+      border: 1px solid;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px);
+      transition:
+        opacity 0.3s ease-in-out,
+        transform 0.3s ease-in-out;
+
+      &.open {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+      }
+
+      .dropdownItem {
+        padding: 8px 12px;
+        color: #333;
+        border-bottom: 1px solid #eaeaea;
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      .logoutButton {
+        width: 100%;
+        margin-top: 10px;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+    }
+  }
+}

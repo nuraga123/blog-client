@@ -1,4 +1,3 @@
-// Переводы для каждого языка
 export const translations = {
   en: {
     login: 'Login',
@@ -6,6 +5,13 @@ export const translations = {
     logout: 'Logout',
     logout_confirm: 'Do you really want to logout?',
     language: 'Language',
+    email: 'E-Mail',
+    email_required: 'Enter your email !',
+    email_invalid: 'Invalid email format !',
+    password: 'Password',
+    password_required: 'Enter your password !',
+    password_min: 'Password must be at least 8 characters !',
+    auth_failed: 'Authentication failed !',
   },
   ru: {
     login: 'Войти',
@@ -13,12 +19,26 @@ export const translations = {
     logout: 'Выйти',
     logout_confirm: 'Вы действительно хотите выйти?',
     language: 'Язык',
+    email: 'E-Mail',
+    email_required: 'Введите почту',
+    email_invalid: 'Неверный формат почты',
+    password: 'Пароль',
+    password_required: 'Введите пароль',
+    password_min: 'Пароль должен быть не менее 8 символов',
+    auth_failed: 'Не удалось авторизоваться!',
   },
   az: {
     login: 'Daxil ol',
     register: 'Hesab yarat',
     logout: 'Çıxış et',
-    logout_confirm: 'Çıxmaq istəyirsinizmi?',
+    logout_confirm: 'Çıxmaq istəyirsinizmi ?',
     language: 'Dil',
+    email: 'E-Mail',
+    email_required: 'Email daxil edin',
+    email_invalid: 'Yanlış email formatı',
+    password: 'Şifrə',
+    password_required: 'Şifrəni daxil edin',
+    password_min: 'Şifrə ən azı 8 simvoldan ibarət olmalıdır',
+    auth_failed: 'Giriş uğursuz oldu!',
   },
 };

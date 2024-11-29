@@ -1,15 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useTranslation } from '../../hook/useTranslation'; // Обновленный импорт
-import AzencoLogo from '../AzencoLogo/AzencoLogo';
-import LanguageSwitcher from '../LanguageSwitcher';
+import { useTranslation } from '../../hook/useTranslation.js';
+import AzencoLogo from '../AzencoLogo/AzencoLogo.jsx';
+import LanguageSwitcher from '../LanguageSwitcher/index.jsx';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectIsAuth, logout } from '../../redux/slices/auth.js';
 
 export const Header = () => {
-  const { translate } = useTranslation(); // Получаем функцию для перевода
+  const { data } = useSelector((state) => state.auth);
+  const username = data || '';
+  const [openUser, setOpenUser] = useState(false);
+  const isAuth = useSelector(selectIsAuth);
+  const { translate } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
   const pathname = location.pathname;
 
@@ -18,6 +25,7 @@ export const Header = () => {
 
   const handleLogout = () => {
     if (window.confirm(translate('logout_confirm'))) {
+      dispatch(logout());
       localStorage.removeItem('token');
       navigate('/login');
     }
@@ -27,17 +35,17 @@ export const Header = () => {
     <div className={styles.root}>
       <Container maxWidth="lg">
         <div className={styles.inner}>
-          <Link to="/">
+          {isAuth ? (
+            <Link to="/">
+              <AzencoLogo />
+            </Link>
+          ) : (
             <AzencoLogo />
-          </Link>
+          )}
 
           <div className={styles.buttons}>
-            <Button variant="contained" color="error" onClick={handleLogout}>
-              {translate('logout')}
-            </Button>
-
-            {!isLogin && !isRegister && (
-              <Link to={'login'}>
+            {!isAuth && isRegister && (
+              <Link to="login">
                 <Button
                   variant="contained"
                   color="success"
@@ -47,13 +55,43 @@ export const Header = () => {
                 </Button>
               </Link>
             )}
-            {!isRegister && (
-              <Link to={'register'}>
+
+            {!isAuth && isLogin && (
+              <Link to="register">
                 <Button variant="contained" color="info" className={styles.btn}>
                   {translate('register')}
                 </Button>
               </Link>
             )}
+
+            {isAuth && (
+              <div className={styles.userMenu}>
+                <img
+                  onClick={() => setOpenUser(!openUser)}
+                  onMouseEnter={() => setOpenUser(true)}
+                  className={styles.avatar}
+                  src="https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="
+                  alt="avatar"
+                />
+                <div
+                  className={`${styles.dropdownMenu} ${
+                    openUser ? styles.open : ''
+                  }`}
+                >
+                  <div className={styles.dropdownItem}>{username.username}</div>
+                  <div className={styles.dropdownItem}>{username.email}</div>
+                  <Button
+                    variant="contained"
+                    color="error"
+                    className={styles.logoutButton}
+                    onClick={handleLogout}
+                  >
+                    {translate('logout')}
+                  </Button>
+                </div>
+              </div>
+            )}
+
             <div className={styles.btn}>
               <LanguageSwitcher />
             </div>

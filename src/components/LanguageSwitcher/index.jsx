@@ -1,30 +1,33 @@
 import React, { useState } from 'react';
-import { useTranslation } from '../../hook/useTranslation'; // Обновленный импорт
-import styles from './LanguageSwitcher.module.scss'; // Импорт стилей
+import { useTranslation } from '../../hook/useTranslation';
+import styles from './LanguageSwitcher.module.scss';
 
 const LanguageSwitcher = () => {
   const { changeLanguage } = useTranslation();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false); // Состояние для открытия/закрытия списка
-  const [currentLanguage, setCurrentLanguage] = useState('az'); // Состояние для текущего языка
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [currentLanguage, setCurrentLanguage] = useState(
+    localStorage.getItem('lang') || 'az'
+  );
 
   // Функция для переключения языка
   const handleLanguageChange = (lang) => {
-    setCurrentLanguage(lang); // Обновляем состояние
-    changeLanguage(lang); // Меняем язык с помощью хука
-    setIsDropdownOpen(false); // Закрываем список после выбора
+    localStorage.setItem('lang', lang);
+    setCurrentLanguage(lang);
+    changeLanguage(lang);
+    setIsDropdownOpen(false);
   };
 
   return (
     <div className={styles.languageSwitcher}>
       <button
         className={styles.btn}
-        onClick={() => setIsDropdownOpen(!isDropdownOpen)} // Открыть/закрыть выпадающий список
+        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
       >
         {currentLanguage === 'az'
-          ? 'Az'
+          ? 'az'
           : currentLanguage === 'ru'
-            ? 'Ru'
-            : 'En'}
+            ? 'ru'
+            : 'en'}
       </button>
 
       {isDropdownOpen && (
@@ -33,19 +36,19 @@ const LanguageSwitcher = () => {
             className={styles.dropdownItem}
             onClick={() => handleLanguageChange('az')}
           >
-            Az
+            az
           </button>
           <button
             className={styles.dropdownItem}
             onClick={() => handleLanguageChange('ru')}
           >
-            Ru
+            ru
           </button>
           <button
             className={styles.dropdownItem}
             onClick={() => handleLanguageChange('en')}
           >
-            En
+            en
           </button>
         </div>
       )}

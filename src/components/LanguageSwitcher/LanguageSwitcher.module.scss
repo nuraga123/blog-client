@@ -5,15 +5,15 @@
 
 .btn {
   background-color: transparent;
-  border: 2px solid #4caf50; /* Зеленая граница */
-  color: #4caf50;
-  padding: 8px 16px;
+  border: 2px solid #4caf50;
+  padding: 8px;
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  border-radius: 30px;
+  border-radius: 10px;
   transition: all 0.3s ease-in-out;
-  text-transform: capitalize; /* Делаем первую букву заглавной */
+  text-transform: capitalize;
+  margin: 0;
 
   &:hover {
     background-color: #4caf50;
@@ -28,13 +28,10 @@
     outline: none;
     box-shadow: 0 0 5px rgba(76, 175, 80, 0.6);
   }
-
-  margin: 0;
 }
 
 .dropdown {
   position: absolute;
-
   background-color: #fff;
   border: 2px solid #4caf50;
   border-radius: 5px;
@@ -48,12 +45,13 @@
 
 .dropdownItem {
   background-color: transparent;
-  padding: 8px 16px;
+  padding: 8px;
   margin: 0;
   border: none;
   cursor: pointer;
-  color: #4caf50;
   font-size: 16px;
+  text-transform: capitalize;
+  border-bottom: 1px solid #4caf50;
 
   &:hover {
     background-color: #4caf50;
@@ -62,5 +60,9 @@
 
   &:focus {
     outline: none;
+  }
+
+  &:last-child {
+    border-bottom: none;
   }
 }

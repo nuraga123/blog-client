@@ -1,11 +1,11 @@
-import React from "react";
-import styles from "./index.module.scss";
-import { useNavigate } from "react-router-dom";
+import React from 'react';
+import styles from './index.module.scss';
+import { useNavigate } from 'react-router-dom';
 
 function NotFoundPage() {
   const navigate = useNavigate();
-  const handleBack = () => navigate(-1);
-
+  const handleBack = () => navigate('/');
+  
   return (
     <div className={styles.notFoundContainer}>
       <h1 className={styles.notFoundContainer__title}>4 0 4</h1>

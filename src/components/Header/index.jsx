@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Button from '@mui/material/Button';
+import { CloseRounded } from '@mui/icons-material';
 import styles from './Header.module.scss';
 import Container from '@mui/material/Container';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -8,11 +9,20 @@ import AzencoLogo from '../AzencoLogo/AzencoLogo.jsx';
 import LanguageSwitcher from '../LanguageSwitcher/index.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectIsAuth, logout } from '../../redux/slices/auth.js';
+import {
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
 
 export const Header = () => {
+  const [openUser, setOpenUser] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
   const { data } = useSelector((state) => state.auth);
   const username = data || '';
-  const [openUser, setOpenUser] = useState(false);
   const isAuth = useSelector(selectIsAuth);
   const { translate } = useTranslation();
   const navigate = useNavigate();
@@ -24,11 +34,10 @@ export const Header = () => {
   const isRegister = location.pathname === '/register';
 
   const handleLogout = () => {
-    if (window.confirm(translate('logout_confirm'))) {
-      dispatch(logout());
-      localStorage.removeItem('token');
-      navigate('/login');
-    }
+    dispatch(logout());
+    localStorage.removeItem('token');
+    navigate('/login');
+    setOpenModal(false);
   };
 
   return (
@@ -47,6 +56,7 @@ export const Header = () => {
             {!isAuth && isRegister && (
               <Link to="login">
                 <Button
+                  size="small"
                   variant="contained"
                   color="success"
                   className={styles.btn}
@@ -58,7 +68,12 @@ export const Header = () => {
 
             {!isAuth && isLogin && (
               <Link to="register">
-                <Button variant="contained" color="info" className={styles.btn}>
+                <Button
+                  size="small"
+                  variant="contained"
+                  color="info"
+                  className={styles.btn}
+                >
                   {translate('register')}
                 </Button>
               </Link>
@@ -66,28 +81,47 @@ export const Header = () => {
 
             {isAuth && (
               <div className={styles.userMenu}>
-                <img
-                  onClick={() => setOpenUser(!openUser)}
-                  onMouseEnter={() => setOpenUser(true)}
-                  className={styles.avatar}
-                  src="https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="
-                  alt="avatar"
-                />
+                {!openUser && (
+                  <img
+                    onClick={() => setOpenUser(!openUser)}
+                    className={styles.avatar}
+                    src="https://media.istockphoto.com/id/1300845620/vector/user-icon-flat-isolated-on-white-background-user-symbol-vector-illustration.jpg?s=612x612&w=0&k=20&c=yBeyba0hUkh14_jgv1OKqIH0CCSWU_4ckRkAoy2p73o="
+                    alt="avatar"
+                  />
+                )}
                 <div
+                  //onMouseLeave={() => setOpenUser(false)}
                   className={`${styles.dropdownMenu} ${
                     openUser ? styles.open : ''
                   }`}
                 >
-                  <div className={styles.dropdownItem}>{username.username}</div>
+                  <div className={styles.btns}>
+                    <div className={styles.dropdownItem}>
+                      {username.username}
+                    </div>
+                    <Button
+                      sx={{ minWidth: 10, padding: 0 }}
+                      onClick={() => setOpenUser(!openUser)}
+                      variant="contained"
+                      color="error"
+                    >
+                      <CloseRounded size="small" />
+                    </Button>
+                  </div>
                   <div className={styles.dropdownItem}>{username.email}</div>
-                  <Button
-                    variant="contained"
-                    color="error"
-                    className={styles.logoutButton}
-                    onClick={handleLogout}
-                  >
-                    {translate('logout')}
-                  </Button>
+                  <div className={styles.btns}>
+                    <Button
+                      className={styles.logoutButton}
+                      variant="contained"
+                      color="error"
+                      onClick={() => {
+                        setOpenModal(true);
+                        setOpenUser(false);
+                      }}
+                    >
+                      {translate('logout')}
+                    </Button>
+                  </div>
                 </div>
               </div>
             )}
@@ -98,6 +132,44 @@ export const Header = () => {
           </div>
         </div>
       </Container>
+
+      {/* Модальное окно для подтверждения выхода */}
+      <Dialog
+        sx={{ alignItems: 'flex-start' }}
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        aria-labelledby="logout-dialog-title"
+        aria-describedby="logout-dialog-description"
+      >
+        <DialogTitle id="logout-dialog-title">
+          {translate('logout_confirm_title')}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="logout-dialog-description">
+            {translate('logout_confirm')}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-around',
+          }}
+        >
+          <Button
+            onClick={() => {
+              setOpenModal(false);
+              setOpenUser(false);
+            }}
+            color="primary"
+            variant="outlined"
+          >
+            {translate('cancel')}
+          </Button>
+          <Button onClick={handleLogout} color="error" variant="contained">
+            {translate('logout')}
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

@@ -9,8 +9,11 @@ import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { selectIsAuth, fetchRegistration } from '../../redux/slices/auth';
+import { useTranslation } from '../../hook/useTranslation';
+import { toast } from 'react-toastify';
 
 export const Registration = () => {
+  const { translate } = useTranslation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAuth = useSelector(selectIsAuth);
@@ -34,7 +37,8 @@ export const Registration = () => {
       localStorage.setItem('token', payload.token);
       navigate('/');
     } else {
-      alert('Ошибка при регистрации !');
+      toast.error(translate('register_failed'));
+      navigate('/register');
     }
   };
 

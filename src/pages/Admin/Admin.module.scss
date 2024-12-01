@@ -1,0 +1,83 @@
+$primary-green: #00ff00;
+$background-dark: #000000;
+$input-bg: #0a0a0a;
+$input-border: #00ff00;
+
+.adminContainer {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: $background-dark;
+  color: $primary-green;
+  font-family: 'Courier New', Courier, monospace;
+  text-align: center;
+  border-radius: 20px;
+}
+
+.adminTitle,
+.adminWelcome {
+  font-size: 25px;
+  animation: blink 1s infinite;
+}
+
+.hackerInput {
+  width: 100% !important;
+  background: $input-bg !important;
+  border: 2px solid $input-border !important;
+  color: $primary-green !important;
+  padding: 10px !important;
+  margin: 20px 10px !important;
+  font-size: 18px !important;
+  font-family: 'Courier New', monospace !important;
+  border-radius: 10px !important;
+}
+
+.hackerButton {
+  margin: 20px 0;
+  border-radius: 10px;
+  background: transparent;
+  border: 2px solid $primary-green;
+  color: $primary-green;
+  padding: 10px 20px;
+  font-size: 1.5rem;
+  letter-spacing: 3px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    color 0.3s;
+
+  &:hover {
+    background: $primary-green;
+    color: $background-dark;
+  }
+
+  &:disabled {
+    display: none;
+  }
+}
+
+.adminConsole {
+  background: $input-bg;
+  border: 1px solid $primary-green;
+  padding: 20px;
+  margin-top: 20px;
+  width: 90%;
+  max-width: 600px;
+  font-size: 1rem;
+  text-align: left;
+  overflow: auto;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

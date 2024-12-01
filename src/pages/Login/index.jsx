@@ -10,12 +10,13 @@ import Button from '@mui/material/Button';
 import Autocomplete from '@mui/material/Autocomplete';
 
 import styles from './Login.module.scss';
-import { fetchAuth, selectIsAuth } from '../../redux/slices/auth';
+import { fetchLogin, selectIsAuth } from '../../redux/slices/auth';
 import { fetchUsers } from '../../redux/slices/users';
 import { useTranslation } from '../../hook/useTranslation';
+import { toast } from 'react-toastify';
 
 export const Login = () => {
-  const { translate } = useTranslation(); // Подключение перевода
+  const { translate } = useTranslation();
   const navigate = useNavigate();
   const isAuth = useSelector(selectIsAuth);
   const dispatch = useDispatch();
@@ -37,12 +38,15 @@ export const Login = () => {
   });
 
   const onSubmit = async (values) => {
-    const { payload } = await dispatch(fetchAuth(values));
-    if (payload) {
+    const { payload } = await dispatch(fetchLogin(values));
+    if (!payload.token || payload?.message) {
+      toast.error(
+        `${translate('login_failed')} ${translate(`${payload?.message}`)}`
+      );
+    } else {
       localStorage.setItem('token', payload.token);
       navigate('/');
-    } else {
-      alert(translate('auth_failed'));
+      toast.success(translate('login_success'));
     }
   };
 
@@ -104,15 +108,30 @@ export const Login = () => {
           helperText={errors.password?.message}
           fullWidth
         />
-        <Button
-          type="submit"
-          size="large"
-          variant="contained"
-          fullWidth
-          disabled={!isValid}
-        >
-          {translate('login')}
-        </Button>
+        <div>
+          <Button
+            type="submit"
+            size="large"
+            variant="contained"
+            fullWidth
+            disabled={!isValid}
+          >
+            {translate('login')}
+          </Button>
+
+          <Button
+            sx={{
+              padding: 0,
+              margin: '10px 0',
+              fontSize: 16,
+            }}
+            onClick={() => navigate('/support')}
+            variant="contained"
+            fullWidth
+          >
+            {translate('forgot_password')}
+          </Button>
+        </div>
       </form>
     </Paper>
   );

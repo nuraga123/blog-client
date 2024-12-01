@@ -16,6 +16,7 @@ import api from '../../axios';
 import { selectIsAuth } from '../../redux/slices/auth';
 import styles from './AddPost.module.scss';
 import { CircularProgress } from '@mui/material';
+import { toast } from 'react-toastify';
 
 export const AddPost = () => {
   const { id } = useParams();
@@ -61,7 +62,7 @@ export const AddPost = () => {
           navigate(`/posts/${newPostId}`);
         } else {
           setLoading(false);
-          alert('Ошибка нет id');
+          toast.warning('Ошибка нет id');
         }
       } else {
         const { data } = await api.patch(`/posts/${id}`, fields);

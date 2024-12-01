@@ -1,10 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../axios.js";
+import { AxiosError } from "axios";
 
-export const fetchAuth = createAsyncThunk("auth/fetchAuth",
+export const fetchLogin = createAsyncThunk("auth/fetchLogin",
   async (params) => {
-    const { data } = await api.post("auth/login", params);
-    return data;
+    try {
+      const { data } = await api.post("auth/login", params);
+      return data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return {
+          message: error.response.data.message,
+          user: null,
+        };
+      }
+    }
   },
 );
 
@@ -24,6 +34,7 @@ export const fetchAuthMe = createAsyncThunk("auth/fetchAuthMe",
 
 const initialState = {
   data: null,
+  message: "",
   status: "loading",
 };
 
@@ -38,15 +49,18 @@ const authSlice = createSlice({
   extraReducers: (bulder) =>
 
     bulder // login
-      .addCase(fetchAuth.pending, (state) => {
+      .addCase(fetchLogin.pending, (state) => {
         state.status = "loading";
         state.data = null;
       })
-      .addCase(fetchAuth.fulfilled, (state, action) => {
-        state.data = action.payload;
-        state.status = "loaded";
+      .addCase(fetchLogin.fulfilled, (state, action) => {
+        const actionsMessage = action.payload?.message
+        state.data = actionsMessage ? null : action.payload;
+        state.message = actionsMessage;
+        state.status = actionsMessage ? "error" : "loaded";
       })
-      .addCase(fetchAuth.rejected, (state) => {
+      .addCase(fetchLogin.rejected, (state, action) => {
+        state.message = action.payload;
         state.status = "error";
         state.data = null;
       }) // get me
@@ -58,8 +72,8 @@ const authSlice = createSlice({
         state.status = "loaded";
         state.data = action.payload;
       })
-      .addCase(fetchAuthMe.rejected, (state, action) => {
-        state.status = "loading";
+      .addCase(fetchAuthMe.rejected, (state) => {
+        state.status = "error";
         state.data = null;
       }) // registration
       .addCase(fetchRegistration.pending, (state) => {
@@ -71,7 +85,7 @@ const authSlice = createSlice({
         state.data = action.payload;
       })
       .addCase(fetchRegistration.rejected, (state) => {
-        state.status = "loading";
+        state.status = "error";
         state.data = null;
       })
 });

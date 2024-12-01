@@ -4,6 +4,8 @@ import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import CssBaseline from "@mui/material/CssBaseline";
 import { ThemeProvider } from "@mui/material";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import App from "./App";
 import { theme } from "./theme";
@@ -18,6 +20,9 @@ root.render(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <Provider store={store}>
+          <ToastContainer
+            autoClose={3000}
+          />
           <App />
         </Provider>
       </BrowserRouter>

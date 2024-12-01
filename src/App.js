@@ -1,27 +1,34 @@
-import Container from "@mui/material/Container";
-import { Routes, Route } from "react-router-dom";
-import { Header } from "./components";
-import { Home, FullPost, Registration, AddPost, Login } from "./pages";
-import NotFoundPage from "./components/Error";
 import { useDispatch, useSelector } from "react-redux";
+import { Routes, Route } from "react-router-dom";
+import Container from "@mui/material/Container";
+
+import { Home, FullPost, Registration, AddPost, Login } from "./pages";
+import { Header } from "./components";
+import NotFoundPage from "./components/Error";
+import Loading from "./components/Loading";
 import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
-import { useEffect } from "react";
 import { LanguageProvider } from "./hook/useTranslation";
+import { useEffect } from "react";
+import Support from "./pages/Support";
+import Admin from "./pages/Admin";
+import { ResetPassword } from "./pages/ResetPassword";
 
 
 function App() {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
+  const status = useSelector((state) => state?.auth?.status);
 
-  useEffect(() => {
-    const loadToken = async () => {
-      const data = await dispatch(fetchAuthMe());
-      console.log(data);
-    }
+  useEffect(() => dispatch(fetchAuthMe()), [dispatch])
 
-    loadToken();
+  if (status === "loading") {
+    return (
+      <LanguageProvider>
+        <Loading />
+      </LanguageProvider>
+    )
+  }
 
-  }, [dispatch]);
 
   if (!isAuth) {
     return <LanguageProvider>
@@ -31,7 +38,8 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Registration />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Routes>
       </Container>
     </LanguageProvider>
@@ -42,10 +50,11 @@ function App() {
       <Container maxWidth="lg">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="*" element={<NotFoundPage />} />
+          <Route path="/*" element={<NotFoundPage />} />
           <Route path="/posts/:id" element={<FullPost />} />
           <Route path="/posts/:id/edit" element={<AddPost />} />
           <Route path="/add-post" element={<AddPost />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </Container>
     </LanguageProvider>

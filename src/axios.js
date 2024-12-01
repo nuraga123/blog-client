@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const API_URL = "https://blog-server-iyxb.onrender.com";
-// export const API_URL = "http://localhost:4444";
+// export const API_URL = "http://192.168.100.5:4444";
 
 const instance = axios.create({ baseURL: API_URL });
 

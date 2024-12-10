@@ -9,7 +9,7 @@ import { selectIsAuth } from '../../redux/slices/auth';
 import { useNavigate } from 'react-router-dom';
 import CreateResetPasswordForm from './CreateResetPasswordForm';
 
-function Admin() {
+export function Admin() {
   const isAuth = useSelector(selectIsAuth);
   const navigate = useNavigate();
   const [isAdmin, setIsAdmin] = useState(false);
@@ -98,5 +98,3 @@ function Admin() {
     );
   }
 }
-
-export default Admin;

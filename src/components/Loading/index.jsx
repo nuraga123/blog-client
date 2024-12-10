@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Loading.module.scss';
 import { useTranslation } from '../../hook/useTranslation';
 
-const Loading = () => {
+export const Loading = () => {
   const { translate } = useTranslation();
 
   return (
@@ -14,5 +14,3 @@ const Loading = () => {
     </div>
   );
 };
-
-export default Loading;

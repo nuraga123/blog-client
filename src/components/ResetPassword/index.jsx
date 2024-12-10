@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import api from '../../axios';
 import styles from './ResetPassword.module.scss';
-import { toast } from 'react-toastify';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import { Button } from '@mui/material';
+import { useTranslation } from '../../hook/useTranslation';
 
 export const ResetPassword = () => {
+  const { translate } = useTranslation();
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
@@ -32,7 +32,7 @@ export const ResetPassword = () => {
 
     // Проверка на совпадение паролей
     if (newPassword !== confirmPassword) {
-      setError('Пароли не совпадают');
+      setError(translate('invalid_password'));
       return;
     }
 
@@ -56,71 +56,57 @@ export const ResetPassword = () => {
 
   return (
     <div className={styles.resetPasswordForm}>
-      <Button
-        sx={{
-          padding: 1,
-          width: 40,
-          margin: '10px 0',
-          fontSize: 16,
-        }}
-        onClick={() => navigate('/')}
-        variant="contained"
-        color="secondary"
-        fullWidth
-      >
-        <ArrowBackIcon />
-      </Button>
-      <h2>Обновить пароль</h2>
+      <h2>{translate('reset_password')}</h2>
       <div className={styles.formGroup}>
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">{translate('email')}</label>
         <input
           id="email"
           type="email"
-          placeholder="Введите ваш email"
+          placeholder={translate('email_required')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="username">Имя пользователя</label>
+        <label htmlFor="username">{translate('username')}</label>
         <input
           id="username"
           type="text"
-          placeholder="Введите ваше имя пользователя"
+          placeholder={translate('username_invalid')}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="resetPasswordToken">Токен сброса пароля</label>
+        <label htmlFor="resetPasswordToken">{translate('token')}</label>
         <input
           id="resetPasswordToken"
           type="text"
-          placeholder="Введите токен"
+          placeholder={translate('token')}
           value={resetPasswordToken}
           onChange={(e) => setResetPasswordToken(e.target.value)}
         />
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="newPassword">Новый пароль</label>
+        <label htmlFor="newPassword">{translate('new_password')}</label>
         <input
           id="newPassword"
           type="password"
-          placeholder="Введите новый пароль"
+          placeholder={translate('new_password_required')}
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
         />
       </div>
 
       <div className={styles.formGroup}>
-        <label htmlFor="confirmPassword">Подтверждение пароля</label>
+        <label htmlFor="confirmPassword">{translate('password_сonfirm')}</label>
         <input
           id="confirmPassword"
           type="password"
-          placeholder="Подтвердите новый пароль"
+          placeholder={translate('password_сonfirm')}
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
@@ -129,7 +115,7 @@ export const ResetPassword = () => {
       {error && <div className={styles.errorMessage}>{error}</div>}
 
       <button className={styles.hackerButton} onClick={handleSubmit}>
-        Обновить пароль
+        {translate('update_password')}
       </button>
     </div>
   );

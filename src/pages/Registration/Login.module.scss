@@ -1,8 +1,22 @@
 .root {
   width: 400px;
-  padding: 50px;
+  padding: 20px 50px;
   border: 1px solid #dedede;
-  margin: 50px auto;
+  margin: 10px auto;
+}
+
+@media screen and (max-width: 420px) {
+  .root {
+    width: 320px;
+    padding: 20px;
+  }
+}
+
+@media screen and (max-width: 340px) {
+  .root {
+    width: 290px;
+    padding: 20px 10px;
+  }
 }
 
 .field {

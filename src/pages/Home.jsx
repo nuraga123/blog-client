@@ -25,6 +25,8 @@ export const Home = () => {
 
   const resultPosts = posts.items;
 
+  alert(posts);
+
   return (
     <>
       <Tabs

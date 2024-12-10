@@ -20,8 +20,17 @@ export const fetchLogin = createAsyncThunk("auth/fetchLogin",
 
 export const fetchRegistration = createAsyncThunk("auth/fetchRegistration",
   async (params) => {
-    const { data } = await api.post("auth/register", params);
-    return data;
+    try {
+      const { data } = await api.post("auth/register", params);
+      return data;
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        return {
+          message: error.response.data.message,
+          user: null,
+        };
+      }
+    }
   },
 );
 
@@ -81,10 +90,13 @@ const authSlice = createSlice({
         state.data = null;
       })
       .addCase(fetchRegistration.fulfilled, (state, action) => {
-        state.status = "loaded";
-        state.data = action.payload;
+        const actionsMessage = action.payload?.message
+        state.message = actionsMessage;
+        state.data = actionsMessage ? null : action.payload;
+        state.status = actionsMessage ? "error" : "loaded";
       })
-      .addCase(fetchRegistration.rejected, (state) => {
+      .addCase(fetchRegistration.rejected, (state, action) => {
+        state.message = action.payload;
         state.status = "error";
         state.data = null;
       })

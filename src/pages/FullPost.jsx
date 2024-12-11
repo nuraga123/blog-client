@@ -35,7 +35,6 @@ export const FullPost = () => {
         setLoading(false);
         setPost(data);
       } else {
-        alert('problems');
         setLoading(true);
       }
     };

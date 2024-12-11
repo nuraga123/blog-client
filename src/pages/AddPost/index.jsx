@@ -49,9 +49,6 @@ export const AddPost = () => {
         imageUrl,
       };
 
-      console.log('fields');
-      console.log(fields);
-
       if (!isEditable) {
         const { data } = await api.post('/posts', fields);
 

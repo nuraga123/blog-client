@@ -1,7 +1,7 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Routes, Route } from "react-router-dom";
-import Container from "@mui/material/Container";
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes, Route } from 'react-router-dom';
+import Container from '@mui/material/Container';
 
 import {
   AddPost,
@@ -11,27 +11,26 @@ import {
   FullPost,
   Home,
   Support,
-} from "./pages";
-import { Header, NotFoundPage, Loading } from "./components";
-import { fetchAuthMe, selectIsAuth } from "./redux/slices/auth";
-import { LanguageProvider } from "./hook/useTranslation";
-
+} from './pages';
+import { Header, NotFoundPage, Loading } from './components';
+import { fetchAuthMe, selectIsAuth } from './redux/slices/auth';
+import { LanguageProvider } from './hook/useTranslation';
+import { DashboardLayout } from './components/layout/Layout';
 
 function App() {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
   const status = useSelector((state) => state?.auth?.status);
 
-  useEffect(() => dispatch(fetchAuthMe()), [dispatch])
+  useEffect(() => dispatch(fetchAuthMe()), [dispatch]);
 
-  if (status === "loading") {
+  if (status === 'loading') {
     return (
       <LanguageProvider>
         <Loading />
       </LanguageProvider>
-    )
+    );
   }
-
 
   if (!isAuth) {
     return (
@@ -47,12 +46,12 @@ function App() {
           </Routes>
         </Container>
       </LanguageProvider>
-    )
+    );
   } else {
     return (
       <LanguageProvider>
         <Header />
-        <Container maxWidth="lg">
+        <DashboardLayout>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/*" element={<NotFoundPage />} />
@@ -61,9 +60,9 @@ function App() {
             <Route path="/add-post" element={<AddPost />} />
             <Route path="/admin" element={<Admin />} />
           </Routes>
-        </Container>
+        </DashboardLayout>
       </LanguageProvider>
-    )
+    );
   }
 }
 

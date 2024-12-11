@@ -142,6 +142,7 @@ export const Registration = () => {
           error={Boolean(errors.password_confirm?.message)}
           helperText={errors.password_confirm?.message}
           label={translate('password_сonfirm')}
+          autoComplete="new-password"
           fullWidth
           slotProps={{
             input: {

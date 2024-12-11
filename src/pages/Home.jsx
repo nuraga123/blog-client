@@ -23,9 +23,7 @@ export const Home = () => {
     dispatch(fetchTags());
   }, [dispatch]);
 
-  const resultPosts = posts.items;
-
-  alert(posts);
+  const resultPosts = posts?.items ? posts.items : [];
 
   return (
     <>

@@ -89,8 +89,8 @@ export const Header = () => {
                     alt="avatar"
                   />
                 )}
+
                 <div
-                  //onMouseLeave={() => setOpenUser(false)}
                   className={`${styles.dropdownMenu} ${
                     openUser ? styles.open : ''
                   }`}

@@ -24,6 +24,7 @@ export const Login = () => {
   const { users } = useSelector((state) => state.users);
 
   const isUsersLoading = users.status === 'loading';
+  const isUsersError = users.message;
 
   console.log('users');
   console.log(users);
@@ -56,9 +57,7 @@ export const Login = () => {
     }
   };
 
-  const emails = users.items.map((el) => {
-    return { email: el.email };
-  });
+  const emails = users?.items?.map((el) => ({ email: el?.email }));
 
   if (isAuth) return navigate('/');
 
@@ -67,6 +66,7 @@ export const Login = () => {
       <Typography classes={{ root: styles.title }} variant="h5">
         {translate('login')}
       </Typography>
+      {isUsersError && <div>{isUsersError}</div>}
       {isUsersLoading ? (
         <div
           style={{
@@ -146,7 +146,6 @@ export const Login = () => {
                 padding: 1,
                 margin: '10px 0',
                 fontSize: 16,
-                
               }}
               onClick={() => navigate('/support')}
               variant="contained"

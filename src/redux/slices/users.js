@@ -8,10 +8,13 @@ export const fetchUsers = createAsyncThunk('/users', async () => {
     console.log(data);
     return data;
   } catch (error) {
-    console.log(error);
+    console.log('error ');
+    console.log(error.message);
     if (error instanceof AxiosError) {
+      console.log('error instanceof AxiosError');
+      console.log(error);
       return {
-        message: error.response.data.message,
+        message: error.message,
         user: null,
       };
     }
@@ -22,6 +25,7 @@ const initialState = {
   users: {
     items: [],
     status: 'loading',
+    message: '',
   },
 };
 
@@ -36,12 +40,16 @@ const usersSlice = createSlice({
         state.users.items = [];
       })
       .addCase(fetchUsers.fulfilled, (state, action) => {
-        state.users.items = action.payload;
-        state.users.status = 'load';
+        const actionsMessage = action?.payload?.message;
+        console.log(action);
+        state.users.items = actionsMessage ? null : action.payload;
+        state.users.message = actionsMessage;
+        state.users.status = actionsMessage ? 'error' : 'loaded';
       })
-      .addCase(fetchUsers.rejected, (state) => {
-        state.users.items = [];
+      .addCase(fetchUsers.rejected, (state, action) => {
+        state.users.items = null;
         state.users.status = 'error';
+        state.message = action.payload.message;
       });
   },
 });

@@ -16,6 +16,7 @@ import { Header, NotFoundPage, Loading } from './components';
 import { fetchAuthMe, selectIsAuth } from './redux/slices/auth';
 import { LanguageProvider } from './hook/useTranslation';
 import { DashboardLayout } from './components/layout/Layout';
+import Materials from './pages/Material';
 
 function App() {
   const dispatch = useDispatch();
@@ -59,6 +60,7 @@ function App() {
             <Route path="/posts/:id/edit" element={<AddPost />} />
             <Route path="/add-post" element={<AddPost />} />
             <Route path="/admin" element={<Admin />} />
+            <Route path="/materials" element={<Materials />} />
           </Routes>
         </DashboardLayout>
       </LanguageProvider>

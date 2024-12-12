@@ -14,6 +14,7 @@ import DescriptionIcon from '@mui/icons-material/Description';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import DehazeIcon from '@mui/icons-material/Dehaze';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
+import ShoppingCart from '@mui/icons-material/ShoppingCart';
 
 export function DashboardLayout({ children }) {
   const [isHovered, setIsHovered] = useState(
@@ -37,6 +38,11 @@ export function DashboardLayout({ children }) {
       path: '/admin',
       title: 'Админ',
       icon: <AdminPanelSettingsIcon sx={{ color: 'wheat' }} />,
+    },
+    {
+      path: '/materials',
+      title: 'materials',
+      icon: <ShoppingCart sx={{ color: 'wheat' }} />,
     },
   ];
 

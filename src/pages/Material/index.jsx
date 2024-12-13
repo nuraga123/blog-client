@@ -9,6 +9,7 @@ import {
   Paper,
   TextField,
   Pagination,
+  Button,
 } from '@mui/material';
 import styles from './styles.module.scss'; // Подключение SCSS-стилей
 import api from '../../axios';
@@ -46,22 +47,33 @@ const Materials = () => {
   }, [loadMaterials]);
 
   // Обработчик смены страницы
-  const handleChangePage = (event, newPage) => setPage(newPage);
-
-  // Обработчик смены количества строк на странице
-  const handleChangeRowsPerPage = (event) => setPage(1);
+  const handleChangePage = (event, newPage) => {
+    console.log('newPage');
+    console.log(newPage);
+    setPage(newPage);
+  };
 
   return (
     <div className={styles.materialsPage}>
+      <h1>materiallar</h1>
       {/* Поле для поиска */}
+
       <TextField
         label="Поиск материала"
         variant="outlined"
-        fullWidth
         className={styles.searchInput}
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
       />
+
+      <div className={styles.buttons}>
+        <Button color="success" variant="contained">
+          add material
+        </Button>
+        <Button color="success" variant="contained">
+          add material
+        </Button>
+      </div>
 
       {/* Таблица */}
       <TableContainer component={Paper} className={styles.tableContainer}>
@@ -78,10 +90,38 @@ const Materials = () => {
             {filteredMaterials?.length > 0 ? (
               filteredMaterials?.map((material) => (
                 <TableRow key={material.id}>
-                  <TableCell>{material.name}</TableCell>
-                  <TableCell>{material.azencoCode}</TableCell>
-                  <TableCell>{material?.price?.$numberDecimal}</TableCell>
-                  <TableCell>{material.unit}</TableCell>
+                  <TableCell
+                    sx={{
+                      border: '1px solid #ddd',
+                      padding: 1,
+                    }}
+                  >
+                    {material.name}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      border: '1px solid #ddd',
+                      padding: 1,
+                    }}
+                  >
+                    {material.azencoCode}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      border: '1px solid #ddd',
+                      padding: 1,
+                    }}
+                  >
+                    {material?.price?.$numberDecimal}
+                  </TableCell>
+                  <TableCell
+                    sx={{
+                      border: '1px solid #ddd',
+                      padding: 1,
+                    }}
+                  >
+                    {material.unit}
+                  </TableCell>
                 </TableRow>
               ))
             ) : (
@@ -102,7 +142,7 @@ const Materials = () => {
         color="primary"
         count={count}
         page={page}
-        onPageChange={handleChangePage}
+        onChange={handleChangePage}
         className={styles.pagination}
       />
     </div>

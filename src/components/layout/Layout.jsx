@@ -137,7 +137,7 @@ export function DashboardLayout({ children }) {
           component="main"
           sx={{
             flexGrow: 1,
-            p: 3,
+            p: 1,
             backgroundColor: '#fff',
             borderRadius: 2,
             boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',

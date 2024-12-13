@@ -2,11 +2,11 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding: 20px;
   background-color: #f9f9f9;
 
   .searchInput {
-    margin-bottom: 20px;
+    max-width: 400px;
+    margin: 20px auto;
   }
 
   .tableContainer {
@@ -40,5 +40,35 @@
   }
   .tableContainer::-webkit-scrollbar-thumb:hover {
     background: #105a8d;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .tableContainer {
+    max-width: 650px;
+  }
+}
+
+@media screen and (max-width: 675px) {
+  .tableContainer {
+    max-width: 550px;
+  }
+}
+
+@media screen and (max-width: 635px) {
+  .tableContainer {
+    max-width: 500px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .tableContainer {
+    max-width: 470px;
+  }
+}
+
+@media screen and (max-width: 560px) {
+  .tableContainer {
+    max-width: 400px;
   }
 }

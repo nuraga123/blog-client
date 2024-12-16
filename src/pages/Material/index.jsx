@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import {
   Table,
   TableBody,
@@ -15,11 +17,12 @@ import {
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
 import styles from './styles.module.scss';
 import api from '../../axios';
-import { toast } from 'react-toastify';
 
 const Materials = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [materials, setMaterials] = useState([]);
   const [filterMaterials, setFilterMaterials] = useState([]);
@@ -92,39 +95,51 @@ const Materials = () => {
   return (
     <div className={styles.materialsPage}>
       <Typography variant="h4" component="h1" className={styles.title}>
-        Materials {window.innerHeight}
+        Materials
       </Typography>
 
-      {/* Поле для поиска */}
-      <div className={styles.searchContainer}>
-        <TextField
-          label="Поиск материала"
-          variant="outlined"
-          className={styles.searchInput}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+      <div className={styles.panel}>
+        {/* Поле для поиска */}
+        <div className={styles.searchContainer}>
+          <TextField
+            label="Поиск материала"
+            variant="outlined"
+            className={styles.searchInput}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <div>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={searchMaterials}
+              disabled={!searchTerm}
+              className={styles.btn}
+            >
+              <SearchIcon />
+            </Button>
+            <Button
+              color="error"
+              variant="contained"
+              onClick={resetSearch}
+              className={styles.btn}
+            >
+              <RestartAltIcon />
+            </Button>
+          </div>
+        </div>
+
         <div>
           <Button
-            color="primary"
             variant="contained"
-            onClick={searchMaterials}
-            disabled={!searchTerm}
+            color="success"
             className={styles.btn}
+            onClick={() => navigate('/materials/add')}
           >
-            <SearchIcon />
-          </Button>
-          <Button
-            color="error"
-            variant="contained"
-            onClick={resetSearch}
-            className={styles.btn}
-          >
-            <RestartAltIcon />
+            <AddCircleIcon />
           </Button>
         </div>
       </div>
-
       {/* Ошибки */}
       {error && (
         <Typography color="error" className={styles.error}>

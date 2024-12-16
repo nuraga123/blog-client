@@ -20,7 +20,7 @@ import api from '../../axios';
 import { toast } from 'react-toastify';
 
 const Materials = () => {
-  const maxHeight = Number(window.innerHeight / 2).toFixed();
+  const maxHeight = Number(window.innerHeight - 400).toFixed();
 
   const [isLoading, setIsLoading] = useState(false);
   const [materials, setMaterials] = useState([]);
@@ -94,7 +94,7 @@ const Materials = () => {
   return (
     <div className={styles.materialsPage}>
       <Typography variant="h4" component="h1" className={styles.title}>
-        Materials {maxHeight}
+        Materials {window.innerHeight}
       </Typography>
 
       {/* Поле для поиска */}
@@ -110,18 +110,17 @@ const Materials = () => {
           <Button
             color="primary"
             variant="contained"
-            sx={{ margin: 1 }}
             onClick={searchMaterials}
             disabled={!searchTerm}
-            className={styles.btn__search}
+            className={styles.btn}
           >
             <SearchIcon />
           </Button>
           <Button
             color="error"
             variant="contained"
-            sx={{ margin: 1 }}
             onClick={resetSearch}
+            className={styles.btn}
           >
             <RestartAltIcon />
           </Button>
@@ -136,11 +135,7 @@ const Materials = () => {
       )}
 
       {/* Таблица */}
-      <TableContainer
-        component={Paper}
-        className={styles.tableContainer}
-        sx={{ maxHeight }}
-      >
+      <TableContainer component={Paper} className={styles.tableContainer}>
         <Table stickyHeader aria-label="materials table">
           <TableHead>
             <TableRow>

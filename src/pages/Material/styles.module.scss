@@ -12,7 +12,7 @@
   }
 
   .searchContainer {
-    max-width: 500px;
+    max-width: max-content;
     width: 100%;
 
     display: flex;
@@ -24,7 +24,10 @@
     max-width: 400px;
   }
 
-  .btn__search {
+  .btn {
+    min-width: 20px;
+    padding: 15px;
+    margin-left: 3px;
     &:disabled {
       background-color: gray;
     }
@@ -95,8 +98,34 @@
   }
 }
 
-@media screen and (max-width: 560px) {
-  .tableContainer {
-    max-width: 400px;
+@media screen and (max-width: 400px) {
+  .materialsPage {
+    gap: 5px;
+    margin: 0px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    width: 310px;
+    max-height: 640px;
+    height: 100%;
+
+    .title {
+      text-align: start !important;
+      font-size: 20px !important;
+      width: max-content;
+    }
+
+    .tableContainer {
+      max-width: 300px;
+    }
+
+    .btn {
+      min-width: 10px;
+      padding: 10px;
+      margin-left: 2px;
+    }
+
+    .searchInput {
+      max-width: 200px;
+    }
   }
 }

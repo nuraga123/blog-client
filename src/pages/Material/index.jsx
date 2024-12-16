@@ -20,8 +20,6 @@ import api from '../../axios';
 import { toast } from 'react-toastify';
 
 const Materials = () => {
-  const maxHeight = Number(window.innerHeight - 400).toFixed();
-
   const [isLoading, setIsLoading] = useState(false);
   const [materials, setMaterials] = useState([]);
   const [filterMaterials, setFilterMaterials] = useState([]);

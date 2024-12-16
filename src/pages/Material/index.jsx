@@ -10,37 +10,43 @@ import {
   TextField,
   Pagination,
   Button,
+  Typography,
+  CircularProgress,
 } from '@mui/material';
-import styles from './styles.module.scss'; // Подключение SCSS-стилей
+import SearchIcon from '@mui/icons-material/Search';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import styles from './styles.module.scss';
 import api from '../../axios';
+import { toast } from 'react-toastify';
 
 const Materials = () => {
+  const maxHeight = Number(window.innerHeight / 2).toFixed();
+
+  const [isLoading, setIsLoading] = useState(false);
   const [materials, setMaterials] = useState([]);
+  const [filterMaterials, setFilterMaterials] = useState([]);
+  const [isFilter, setIsFilter] = useState(false);
   const [count, setCount] = useState(1);
   const [searchTerm, setSearchTerm] = useState('');
   const [page, setPage] = useState(1);
-  const [filteredMaterials, setFilteredMaterials] = useState([]);
+  const [error, setError] = useState(null);
 
   // Получение данных материалов с сервера
   const loadMaterials = useCallback(async () => {
     try {
+      setIsLoading(true);
+      setError(null);
       const { data } = await api.get(`materials/paginated/?page=${page}`);
       setMaterials(data.materials);
       setCount(data.totalPages);
     } catch (error) {
+      setError('Не удалось загрузить материалы. Попробуйте позже.');
       setMaterials([]);
       setCount(1);
-      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   }, [page]);
-
-  // Фильтрация материалов
-  useEffect(() => {
-    const filtered = materials.filter((material) =>
-      material.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-    setFilteredMaterials(filtered);
-  }, [materials, searchTerm]);
 
   useEffect(() => {
     loadMaterials();
@@ -48,36 +54,94 @@ const Materials = () => {
 
   // Обработчик смены страницы
   const handleChangePage = (event, newPage) => {
-    console.log('newPage');
-    console.log(newPage);
     setPage(newPage);
   };
 
+  // Поиск материалов
+  const searchMaterials = async () => {
+    try {
+      setIsFilter(true);
+      setIsLoading(true);
+      const { data } = await api.post('material/search', {
+        str: searchTerm,
+      });
+
+      if (!data.length) {
+        toast.error(`Нет материалов`);
+        setFilterMaterials([]);
+      } else {
+        toast.success(`Найдено ${data.length} материалов`);
+        setFilterMaterials(data);
+      }
+    } catch (error) {
+      toast.error(`Ошибка при поиске материалов`);
+      setError('Ошибка при поиске материалов');
+      setFilterMaterials([]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Сброс поиска
+  const resetSearch = () => {
+    setIsFilter(false);
+    setSearchTerm('');
+    setFilterMaterials([]);
+  };
+
+  const displayedMaterials = isFilter ? filterMaterials : materials;
+
   return (
     <div className={styles.materialsPage}>
-      <h1>materiallar</h1>
+      <Typography variant="h4" component="h1" className={styles.title}>
+        Materials {maxHeight}
+      </Typography>
+
       {/* Поле для поиска */}
-
-      <TextField
-        label="Поиск материала"
-        variant="outlined"
-        className={styles.searchInput}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-      />
-
-      <div className={styles.buttons}>
-        <Button color="success" variant="contained">
-          add material
-        </Button>
-        <Button color="success" variant="contained">
-          add material
-        </Button>
+      <div className={styles.searchContainer}>
+        <TextField
+          label="Поиск материала"
+          variant="outlined"
+          className={styles.searchInput}
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
+        <div>
+          <Button
+            color="primary"
+            variant="contained"
+            sx={{ margin: 1 }}
+            onClick={searchMaterials}
+            disabled={!searchTerm}
+            className={styles.btn__search}
+          >
+            <SearchIcon />
+          </Button>
+          <Button
+            color="error"
+            variant="contained"
+            sx={{ margin: 1 }}
+            onClick={resetSearch}
+          >
+            <RestartAltIcon />
+          </Button>
+        </div>
       </div>
 
+      {/* Ошибки */}
+      {error && (
+        <Typography color="error" className={styles.error}>
+          {error}
+        </Typography>
+      )}
+
       {/* Таблица */}
-      <TableContainer component={Paper} className={styles.tableContainer}>
-        <Table stickyHeader>
+      <TableContainer
+        component={Paper}
+        className={styles.tableContainer}
+        sx={{ maxHeight }}
+      >
+        <Table stickyHeader aria-label="materials table">
           <TableHead>
             <TableRow>
               <TableCell className={styles.tableHeader}>Название</TableCell>
@@ -87,47 +151,29 @@ const Materials = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredMaterials?.length > 0 ? (
-              filteredMaterials?.map((material) => (
+            {isLoading ? (
+              <TableRow>
+                <TableCell colSpan={4} align="center">
+                  <CircularProgress />
+                </TableCell>
+              </TableRow>
+            ) : displayedMaterials.length > 0 ? (
+              displayedMaterials.map((material) => (
                 <TableRow key={material.id}>
-                  <TableCell
-                    sx={{
-                      border: '1px solid #ddd',
-                      padding: 1,
-                    }}
-                  >
-                    {material.name}
-                  </TableCell>
-                  <TableCell
-                    sx={{
-                      border: '1px solid #ddd',
-                      padding: 1,
-                    }}
-                  >
+                  <TableCell className={styles.cell}>{material.name}</TableCell>
+                  <TableCell className={styles.cell}>
                     {material.azencoCode}
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      border: '1px solid #ddd',
-                      padding: 1,
-                    }}
-                  >
+                  <TableCell className={styles.cell}>
                     {material?.price?.$numberDecimal}
                   </TableCell>
-                  <TableCell
-                    sx={{
-                      border: '1px solid #ddd',
-                      padding: 1,
-                    }}
-                  >
-                    {material.unit}
-                  </TableCell>
+                  <TableCell className={styles.cell}>{material.unit}</TableCell>
                 </TableRow>
               ))
             ) : (
               <TableRow>
                 <TableCell colSpan={4} align="center">
-                  Нет данных
+                  Нет материалов
                 </TableCell>
               </TableRow>
             )}
@@ -136,15 +182,16 @@ const Materials = () => {
       </TableContainer>
 
       {/* Пагинация */}
-
-      <Pagination
-        component="div"
-        color="primary"
-        count={count}
-        page={page}
-        onChange={handleChangePage}
-        className={styles.pagination}
-      />
+      {!isFilter && (
+        <Pagination
+          component="div"
+          color="primary"
+          count={count}
+          page={page}
+          onChange={handleChangePage}
+          className={styles.pagination}
+        />
+      )}
     </div>
   );
 };

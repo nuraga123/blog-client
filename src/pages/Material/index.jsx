@@ -37,7 +37,7 @@ const Materials = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const { data } = await api.get(`materials/paginated/?page=${page}`);
+      const { data } = await api.get(`materials-paginated/?page=${page}`);
       setMaterials(data.materials);
       setCount(data.totalPages);
     } catch (error) {

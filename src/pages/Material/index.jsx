@@ -37,11 +37,11 @@ const Materials = () => {
     try {
       setIsLoading(true);
       setError(null);
-      const { data } = await api.get(`materials-paginated/?page=${page}`);
+      const { data } = await api.get(`materials-paginated?page=${page}`);
       setMaterials(data.materials);
       setCount(data.totalPages);
     } catch (error) {
-      setError('Не удалось загрузить материалы. Попробуйте позже.');
+      setError('Не удалось загрузить материалы');
       setMaterials([]);
       setCount(1);
     } finally {
@@ -54,9 +54,7 @@ const Materials = () => {
   }, [loadMaterials]);
 
   // Обработчик смены страницы
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (event, newPage) => setPage(newPage);
 
   // Поиск материалов
   const searchMaterials = async () => {

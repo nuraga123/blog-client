@@ -45,7 +45,6 @@
   }
 
   .tableContainer {
-    overflow: auto; // Скролл сверху и снизу
     border: 1px solid gray;
   }
 
@@ -88,20 +87,71 @@
 }
 
 @media screen and (max-width: 675px) {
-  .tableContainer {
-    max-width: 550px;
+  .materialsPage {
+    margin: 0;
   }
 }
 
 @media screen and (max-width: 635px) {
-  .tableContainer {
-    max-width: 500px;
+  .materialsPage {
+    gap: 5px;
+    margin: 0;
+    padding: 5px;
+    background-color: #f9f9f9;
+    width: 540px;
+    max-height: 580px;
+    height: 100%;
   }
 }
 
 @media screen and (max-width: 600px) {
+  .materialsPage {
+    gap: 5px;
+    margin: 0;
+    padding: 5px;
+    background-color: #f9f9f9;
+    width: 500px;
+    height: 100%;
+  }
+
   .tableContainer {
     max-width: 470px;
+  }
+
+  .btn {
+    min-width: 10px;
+    padding: 5px;
+    margin: 2px;
+  }
+}
+
+@media screen and (max-width: 535px) {
+  .materialsPage {
+    gap: 5px;
+    padding: 5px;
+    background-color: #f9f9f9;
+    width: 410px;
+    height: 100%;
+
+    .btn {
+      min-width: 10px;
+      padding: 8px;
+      margin: 5px;
+    }
+
+    .searchContainer {
+      margin: 10px 0;
+    }
+
+    .searchInput {
+      max-width: 300px;
+      padding: 10px;
+
+      label {
+        padding: 0;
+        font-size: 12px;
+      }
+    }
   }
 }
 
@@ -112,7 +162,6 @@
     padding: 5px;
     background-color: #f9f9f9;
     width: 355px;
-    max-height: 640px;
     height: 100%;
 
     .title {

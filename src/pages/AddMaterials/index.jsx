@@ -57,7 +57,7 @@ const AddMaterialForm = () => {
 
     setIsLoading(true);
     try {
-      const { data } = await api.post('/material/add', formData);
+      const { data } = await api.post('/materials/add', formData);
       console.log(data);
 
       setSuccess(true);

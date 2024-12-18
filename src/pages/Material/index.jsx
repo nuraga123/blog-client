@@ -61,7 +61,7 @@ const Materials = () => {
     try {
       setIsFilter(true);
       setIsLoading(true);
-      const { data } = await api.post('material/search', {
+      const { data } = await api.post('materials/search', {
         str: searchTerm,
       });
 
@@ -102,7 +102,11 @@ const Materials = () => {
           <TextField
             label="Поиск материала"
             variant="outlined"
-            className={styles.searchInput}
+            InputProps={{
+              classes: {
+                input: styles.searchInput,
+              },
+            }}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />

@@ -15,7 +15,19 @@ export function Admin() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [secret, setSecret] = useState('');
   const [email, setEmail] = useState('');
-  const [openMethod, setOpenMethod] = useState(false);
+  const [openMethod, setOpenMethod] = useState('');
+
+  const CloseBtn = () => {
+    return (
+      <Button
+        variant="contained"
+        color="error"
+        onClick={() => setOpenMethod('')}
+      >
+        X
+      </Button>
+    );
+  };
 
   const checkAdmin = async ({ secret, email }) => {
     try {
@@ -42,18 +54,42 @@ export function Admin() {
   };
 
   if (isAuth) {
-    if (isAdmin) {
+    if (true) {
       return (
         <div className={styles.adminContainer}>
           <h1 className={styles.adminWelcome}>
             Добро пожаловать, администратор!
           </h1>
           <div className={styles.adminConsole}>
-            <p onClick={() => setOpenMethod(!openMethod)}>
-              метод cоздания токена для сброса пароля
-            </p>
+            {openMethod === 'register' ? (
+              <div className={styles.titles}>
+                register
+                <CloseBtn />
+              </div>
+            ) : (
+              <button
+                className={styles.hackerButton}
+                onClick={() => setOpenMethod('register')}
+              >
+                метод разрешение на регистрацию
+              </button>
+            )}
+          </div>
 
-            {openMethod && <CreateResetPasswordForm />}
+          <div className={styles.adminConsole}>
+            {openMethod === 'reset' ? (
+              <div className={styles.titles}>
+                <CreateResetPasswordForm />
+                <CloseBtn />
+              </div>
+            ) : (
+              <button
+                className={styles.hackerButton}
+                onClick={() => setOpenMethod('reset')}
+              >
+                метод cоздания токена для сброса пароля
+              </button>
+            )}
           </div>
         </div>
       );

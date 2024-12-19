@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../../axios';
 import styles from './Admin.module.scss';
+import { Button } from '@mui/material';
 
-function CreateResetPasswordForm() {
+function CreateResetPasswordForm({ close }) {
   const [email, setEmail] = useState('');
   const [messageToken, setMessageToken] = useState('');
   const [secret, setSecret] = useState('');
@@ -35,7 +36,10 @@ function CreateResetPasswordForm() {
 
   return (
     <div className={styles.resetPasswordForm}>
-      <h2>Создание токена для сброса пароля</h2>
+      <div className={styles.titles}>
+        <h1>Создание токена для сброса пароля</h1>
+
+      </div>
       <div className={styles.formGroup}>
         <label>Электронная почта:</label>
         <input

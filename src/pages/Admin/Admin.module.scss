@@ -3,6 +3,11 @@ $background-dark: #000000;
 $input-bg: #0a0a0a;
 $input-border: #00ff00;
 
+.resetPasswordForm {
+  width: 100%;
+  max-width: 500px;
+}
+
 .adminContainer {
   padding: 20px;
   display: flex;
@@ -26,6 +31,7 @@ $input-border: #00ff00;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  width: max-content;
 
   &h1 {
     font-size: 18px;
@@ -75,12 +81,27 @@ $input-border: #00ff00;
   background: $input-bg;
   border: 1px solid $primary-green;
   padding: 20px;
-  margin-top: 20px;
-  width: 90%;
-  max-width: 600px;
+  margin: 20px auto;
+  border-radius: 10px;
+  width: 100%;
+  max-width: max-content;
   font-size: 1rem;
   text-align: left;
   overflow: auto;
+}
+
+@media screen and (max-width: 600px) {
+  .adminContainer {
+    padding: 5px;
+  }
+
+  .adminConsole {
+    padding: 10px 5px;
+  }
+
+  .resetPasswordForm {
+    max-width: 300px;
+  }
 }
 
 @keyframes blink {

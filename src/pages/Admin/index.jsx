@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import { selectIsAuth } from '../../redux/slices/auth';
 import { useNavigate } from 'react-router-dom';
 import CreateResetPasswordForm from './CreateResetPasswordForm';
+import CkeckUserRegistration from './CkeckUserRegistration';
 
 export function Admin() {
   const isAuth = useSelector(selectIsAuth);
@@ -23,6 +24,7 @@ export function Admin() {
         variant="contained"
         color="error"
         onClick={() => setOpenMethod('')}
+        sx={{ minWidth: 20 }}
       >
         X
       </Button>
@@ -63,7 +65,7 @@ export function Admin() {
           <div className={styles.adminConsole}>
             {openMethod === 'register' ? (
               <div className={styles.titles}>
-                register
+                <CkeckUserRegistration />
                 <CloseBtn />
               </div>
             ) : (

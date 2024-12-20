@@ -38,8 +38,14 @@ const Materials = () => {
       setIsLoading(true);
       setError(null);
       const { data } = await api.get(`materials-paginated?page=${page}`);
-      setMaterials(data.materials);
-      setCount(data.totalPages);
+
+      if (data?.materials) {
+        setMaterials(data.materials);
+        setCount(data.totalPages);
+      } else {
+        setMaterials([]);
+        toast.warning(data?.message);
+      }
     } catch (error) {
       setError('Не удалось загрузить материалы');
       setMaterials([]);

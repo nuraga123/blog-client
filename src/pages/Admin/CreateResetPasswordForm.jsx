@@ -37,8 +37,7 @@ function CreateResetPasswordForm({ close }) {
   return (
     <div className={styles.resetPasswordForm}>
       <div className={styles.titles}>
-        <h1>Создание токена для сброса пароля</h1>
-
+        <h3>Создание токена для сброса пароля</h3>
       </div>
       <div className={styles.formGroup}>
         <label>Электронная почта:</label>

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import api from '../../axios';
 import styles from './Admin.module.scss';
-import { Button } from '@mui/material';
 
 function CreateResetPasswordForm({ close }) {
   const [email, setEmail] = useState('');

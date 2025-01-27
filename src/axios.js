@@ -1,11 +1,11 @@
 import axios from 'axios';
 
 // GLOBAL
-// export const API_URL = "https://blog-server-iyxb.onrender.com";
+export const API_URL = "https://blog-server-iyxb.onrender.com";
 
 // LOCAL
 // azenco
-export const API_URL = 'http://192.168.1.49:4444';
+// export const API_URL = 'http://192.168.1.49:4444';
 
 // home
 // export const API_URL = "http://192.168.100.5:4444";
